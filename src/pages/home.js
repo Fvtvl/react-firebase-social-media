@@ -1,6 +1,7 @@
 import Grid from '@mui/material/Grid';
 import axios from 'axios';
 import React, { Component } from 'react';
+import Scream from '../components/Scream';
 
 class home extends Component {
   state = {
@@ -22,7 +23,9 @@ class home extends Component {
   }
   render() {
     let recentScreamMarkup = this.state.screams ? (
-      this.state.screams.map((scream) => <p>{scream.body}</p>)
+      this.state.screams.map((scream) => (
+        <Scream key={scream.screamId} scream={scream} />
+      ))
     ) : (
       <p>Loading...</p>
     );

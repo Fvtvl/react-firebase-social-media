@@ -8,6 +8,7 @@ import Navbar from './components/Navbar';
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
+import { Box, Container } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -24,6 +25,9 @@ const theme = createTheme({
       contrastText: '#fff',
     },
   },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 class App extends Component {
@@ -32,13 +36,15 @@ class App extends Component {
       <ThemeProvider theme={theme}>
         <Router>
           <Navbar />
-          <div className="container">
-            <Routes>
-              <Route path="/" Component={home} />
-              <Route path="/login" Component={login} />
-              <Route path="/signup" Component={signup} />
-            </Routes>
-          </div>
+          <Container maxWidth="xl">
+            <Box sx={{ margin: '80px auto 0 auto' }}>
+              <Routes>
+                <Route path="/" Component={home} />
+                <Route path="/login" Component={login} />
+                <Route path="/signup" Component={signup} />
+              </Routes>
+            </Box>
+          </Container>
         </Router>
       </ThemeProvider>
     );
