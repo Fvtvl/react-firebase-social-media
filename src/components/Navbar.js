@@ -9,7 +9,7 @@ class Navbar extends Component {
   render() {
     return (
       <AppBar>
-        <Toolbar className="nav-container">
+        <Toolbar sx={{ margin: 'auto' }}>
           <Button color="inherit" component={Link} to="/login">
             Login
           </Button>

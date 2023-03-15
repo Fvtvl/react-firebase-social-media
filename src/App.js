@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import createTheme from '@mui/material/styles/createTheme';
 import './App.css';
 import Navbar from './components/Navbar';
-
 import home from './pages/home';
-import login from './pages/login';
 import signup from './pages/signup';
+import Login from './pages/login';
+
+//MUI
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import createTheme from '@mui/material/styles/createTheme';
 import { Box, Container } from '@mui/material';
 
 const theme = createTheme({
@@ -40,7 +41,7 @@ class App extends Component {
             <Box sx={{ margin: '80px auto 0 auto' }}>
               <Routes>
                 <Route path="/" Component={home} />
-                <Route path="/login" Component={login} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/signup" Component={signup} />
               </Routes>
             </Box>
