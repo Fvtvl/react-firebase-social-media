@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import AppIcon from '../images/icon.png';
 
 //MUI
@@ -29,6 +29,7 @@ const Login = () => {
       .post('/login', userData)
       .then((res) => {
         console.log(res.data);
+        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
         setLoading(false);
         navigate('/');
       })
