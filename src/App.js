@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import jwtDecode from 'jwt-decode';
+//Redux
+import { Provider } from 'react-redux';
+import store from './redux/store';
+//Components
 import Navbar from './components/Navbar';
-
 //Pages
 import home from './pages/home';
 import Login from './pages/login';
 import Signup from './pages/signup';
-
 //MUI
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import createTheme from '@mui/material/styles/createTheme';
@@ -23,6 +25,7 @@ const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);
   if (decodedToken.exp * 1000 < Date.now()) {
+    localStorage.removeItem('FBIdToken');
     window.location.href = '/login';
     authenticated = false;
   } else {
@@ -30,10 +33,10 @@ if (token) {
   }
 }
 
-class App extends Component {
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
+const App = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
         <Router>
           <Navbar />
           <Container maxWidth="xl">
@@ -56,9 +59,9 @@ class App extends Component {
             </Box>
           </Container>
         </Router>
-      </ThemeProvider>
-    );
-  }
-}
+      </Provider>
+    </ThemeProvider>
+  );
+};
 
 export default App;

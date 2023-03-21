@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import propTypes from 'prop-types';
+import { Link, useNavigate } from 'react-router-dom';
 import AppIcon from '../images/icon.png';
-
 //MUI
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -10,33 +9,27 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+//Redux stuff
+import { connect, useDispatch } from 'react-redux';
+import { loginUser } from '../redux/actions/userActions';
 
-const Login = () => {
+const Login = (UI) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const loading = UI.UI.loading;
+  const errors = UI.errors;
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setLoading(true);
     const userData = {
       email: email,
       password: password,
     };
-    axios
-      .post('/login', userData)
-      .then((res) => {
-        console.log(res.data);
-        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
-        setLoading(false);
-        navigate('/');
-      })
-      .catch((err) => {
-        setErrors(err.response.data);
-        setLoading(false);
-      });
+    loginUser(userData, navigate, dispatch);
   };
 
   const handleChange = (event) => {
@@ -62,8 +55,8 @@ const Login = () => {
             name="email"
             type="email"
             label="Email"
-            helperText={errors.email}
-            error={errors.email ? true : false}
+            helperText={errors?.email}
+            error={errors?.email ? true : false}
             value={email}
             onChange={handleChange}
             fullWidth
@@ -75,19 +68,19 @@ const Login = () => {
             name="password"
             type="password"
             label="Password"
-            helperText={errors.password}
-            error={errors.password ? true : false}
+            helperText={errors?.password}
+            error={errors?.password ? true : false}
             value={password}
             onChange={handleChange}
             fullWidth
             sx={{ margin: '0 auto 20px auto' }}
           />
-          {errors.general && (
+          {errors?.general && (
             <Typography
               variant="body2"
               sx={{ fontSize: '0.8rem', color: 'red' }}
             >
-              {errors.general}
+              {errors?.general}
             </Typography>
           )}
           <Button
@@ -112,4 +105,20 @@ const Login = () => {
   );
 };
 
-export default Login;
+Login.propTypes = {
+  loginUser: propTypes.func.isRequired,
+  user: propTypes.object.isRequired,
+  UI: propTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+  UI: state.UI,
+  errors: state.UI.errors,
+});
+
+const mapActionsToProps = {
+  loginUser,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(Login);
