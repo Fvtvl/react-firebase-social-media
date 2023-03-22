@@ -1,45 +1,42 @@
-import Grid from '@mui/material/Grid';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import React, { Component } from 'react';
+// Components
+import Profile from '../components/Profile';
 import Scream from '../components/Scream';
+//MUI
+import Grid from '@mui/material/Grid';
 
-class home extends Component {
-  state = {
-    screams: null,
-  };
+const Home = () => {
+  const [screams, setScreams] = useState(null);
 
-  componentDidMount() {
+  useEffect(() => {
     axios
       .get('/screams')
       .then((res) => {
         console.log(res.data);
-        this.setState({
-          screams: res.data,
-        });
+        setScreams(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }
-  render() {
-    let recentScreamMarkup = this.state.screams ? (
-      this.state.screams.map((scream) => (
-        <Scream key={scream.screamId} scream={scream} />
-      ))
-    ) : (
-      <p>Loading...</p>
-    );
-    return (
-      <Grid container spacing={16}>
-        <Grid item sm={8} xs={12}>
-          {recentScreamMarkup}
-        </Grid>
-        <Grid item sm={4} xs={12}>
-          Profile
-        </Grid>
-      </Grid>
-    );
-  }
-}
+  }, []);
 
-export default home;
+  const recentScreamMarkup = screams ? (
+    screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
+  ) : (
+    <p>Loading...</p>
+  );
+
+  return (
+    <Grid container spacing={16}>
+      <Grid item sm={8} xs={12}>
+        {recentScreamMarkup}
+      </Grid>
+      <Grid item sm={4} xs={12}>
+        <Profile />
+      </Grid>
+    </Grid>
+  );
+};
+
+export default Home;

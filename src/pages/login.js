@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import AppIcon from '../images/icon.png';
 //MUI
@@ -20,7 +20,7 @@ const Login = (UI) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const loading = UI.UI.loading;
+  const loading = UI.loading;
   const errors = UI.errors;
 
   const handleSubmit = (event) => {
@@ -106,15 +106,16 @@ const Login = (UI) => {
 };
 
 Login.propTypes = {
-  loginUser: propTypes.func.isRequired,
-  user: propTypes.object.isRequired,
-  UI: propTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.user,
   UI: state.UI,
   errors: state.UI.errors,
+  loading: state.UI.loading,
 });
 
 const mapActionsToProps = {
